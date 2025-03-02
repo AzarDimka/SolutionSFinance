@@ -74,14 +74,10 @@ namespace SodruzhestvoFinance.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
-
 
             [Required(ErrorMessage = "Имя пользователя обязательно")]
             [Display(Name = "Имя пользователя")]
+            //[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Имя пользователя может содержать только буквы и цифры.")] // Регулярное выражени
             public string UserName { get; set; }
 
             /// <summary>
@@ -119,8 +115,9 @@ namespace SodruzhestvoFinance.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None); // Используйте Input.UserName
+                                                                                                 //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None); // Закомментируйте эту строку
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -136,12 +133,12 @@ namespace SodruzhestvoFinance.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", // Закомментируйте эту строку
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."); // Закомментируйте эту строку
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl }); // Закомментируйте эту строку
                     }
                     else
                     {
