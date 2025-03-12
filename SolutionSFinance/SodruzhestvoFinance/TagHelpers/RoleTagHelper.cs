@@ -9,6 +9,7 @@ namespace SodruzhestvoFinance.TagHelpers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+
         [HtmlAttributeName("u-role")]
         public string Role { get; set; }
         public RoleTagHelper(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)

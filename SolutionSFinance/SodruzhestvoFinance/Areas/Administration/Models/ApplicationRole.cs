@@ -2,7 +2,7 @@
 
 namespace SodruzhestvoFinance.Areas.Administration.Models
 {
-    public class ApplicationRole : IdentityRole<int>
+    public class ApplicationRole : IdentityRole<Guid>
     {
     }
 }

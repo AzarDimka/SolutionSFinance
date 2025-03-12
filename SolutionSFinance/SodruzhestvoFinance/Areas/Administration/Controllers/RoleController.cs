@@ -4,6 +4,7 @@ using SodruzhestvoFinance.Areas.Administration.Models;
 
 namespace SodruzhestvoFinance.Areas.Administration.Controllers
 {
+    [Area("Administration")]
     public class RoleController : Controller
     {
         RoleManager<ApplicationRole> _manager;
@@ -15,11 +16,6 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
             _users = users;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [Route("{area}/{action}")]
         [HttpGet]
         public IActionResult Role()
@@ -29,9 +25,9 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
 
         [Route("{area}/{action}")]
         [HttpPost]
-        public IActionResult Role([FromForm] string roleName)
+        public async Task<IActionResult> Role([FromForm] string roleName)
         {
-            _manager.CreateAsync(new ApplicationRole()
+            await _manager.CreateAsync(new ApplicationRole()
             {
                 Name = roleName
             });
