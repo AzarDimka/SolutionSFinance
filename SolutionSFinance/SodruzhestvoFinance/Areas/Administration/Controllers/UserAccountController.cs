@@ -1,19 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SodruzhestvoFinance.Areas.Administration.Models;
 
 namespace SodruzhestvoFinance.Areas.Administration.Controllers
 {
     [Area("Administration")]
     public class UserAccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserAccountController(UserManager<IdentityUser> userManager)
+        public UserAccountController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
+        //[Authorize]
         public async Task<IActionResult> Index()
         {
             // Get the list of users

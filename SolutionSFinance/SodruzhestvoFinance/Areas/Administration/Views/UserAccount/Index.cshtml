@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using SodruzhestvoFinance.Areas.Administration.Models
 @{
     ViewData["Title"] = "Учётные записи";
     Layout = "_Layout";
 
-    List<IdentityUser> users = ViewBag.Users; // Получаем список пользователей из ViewBag
+    List<ApplicationUser> users = ViewBag.Users; // Получаем список пользователей из ViewBag
 }
 <h1>@ViewData["Title"]</h1>
 
