@@ -1,0 +1,13 @@
+﻿<h2>Роли пользователей</h2>
+@using (Html.BeginForm("AddRole", "Role", FormMethod.Post, new { @class="row g-3" }))
+{
+    <div class="col-auto">
+        <input type="text" readonly class="form-control-plaintext" id="roleLabel" value="Роль">
+    </div>
+    <div class="col-auto">
+        @Html.TextBox("roleName", string.Empty, new { @class = "form-control", @placeholder = "Название роли..." })
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary mb-3">Добавить</button>
+    </div>
+}
