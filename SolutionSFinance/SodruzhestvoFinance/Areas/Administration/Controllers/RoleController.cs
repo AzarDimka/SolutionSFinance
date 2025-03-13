@@ -16,36 +16,32 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
             _users = users;
         }
 
-        [Route("{area}/{action}")]
         [HttpGet]
-        public IActionResult Role()
+        public IActionResult Index()
         {
             return View(_manager.Roles);
         }
 
-        [Route("{area}/{action}")]
         [HttpPost]
-        public async Task<IActionResult> Role([FromForm] string roleName)
+        public async Task<IActionResult> AddRole(string roleName)
         {
             await _manager.CreateAsync(new ApplicationRole()
             {
                 Name = roleName
             });
-            return RedirectToAction("Role");
+            return RedirectToAction("Index");
         }
 
-        [Route("{area}/{action}/{id}")]
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var role = await _manager.FindByIdAsync(id);
             if (role != null)
                 await _manager.DeleteAsync(role);
-            return RedirectToAction("Role");
+            return RedirectToAction("Index");
         }
 
-        [Route("{area}/{action}/{id}")]
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Update(string id)
         {
             ApplicationRole role = await _manager.FindByIdAsync(id);
@@ -63,7 +59,7 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
                 NonMembers = nonMembers
             });
         }
-        [Route("{area}/{action}/{id}")]
+
         [HttpPost]
         public async Task<IActionResult> Update([FromForm] RoleModification model)
         {
@@ -94,7 +90,7 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
                     }
                 }
             }
-            return RedirectToAction("Role");
+            return RedirectToAction("Index");
         }
     }
 }

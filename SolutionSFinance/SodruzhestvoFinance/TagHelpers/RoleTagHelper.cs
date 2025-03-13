@@ -12,11 +12,13 @@ namespace SodruzhestvoFinance.TagHelpers
 
         [HtmlAttributeName("u-role")]
         public string Role { get; set; }
+
         public RoleTagHelper(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
         }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             List<string?> users = [];
