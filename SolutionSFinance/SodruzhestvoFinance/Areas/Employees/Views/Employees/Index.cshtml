@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Сотрудники";
+    Layout = "_Layout";
+}
+
+@model IEnumerable<SodruzhestvoFinance.Areas.Employees.Models.Employee>
+
+<h1>Сотрудники</h1>
+
+@using (Html.BeginForm("EmployeeCreationPage", "Employees", FormMethod.Get))
+{
+    <button type="submit" class="btn btn-sm btn-secondary">Создать нового сотрудника</button>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MiddleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+                    {
+                        <button type="submit" class="btn btn-sm btn-secondary">Редактировать</button>
+                    }
+                    @using (Html.BeginForm("Details", "Employees", FormMethod.Get))
+                    {
+                        <button type="submit" class="btn btn-sm btn-secondary">Детали</button>
+                    }
+                    @using (Html.BeginForm("Delete", "Employees", FormMethod.Get))
+                    {
+                        <button type="submit" class="btn btn-sm btn-secondary">Удалить</button>
+                    }
+                    <a asp-area="Employees" asp-controller="Employees" asp-action="Edit" asp-route-id="@item.EmployeeId">Редактировать</a> |
+                    <a asp-area="Employees" asp-controller="Employees" asp-action="Details" asp-route-id="@item.EmployeeId">Детали</a> |
+                    <a asp-area="Employees" asp-controller="Employees" asp-action="Delete" asp-route-id="@item.EmployeeId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

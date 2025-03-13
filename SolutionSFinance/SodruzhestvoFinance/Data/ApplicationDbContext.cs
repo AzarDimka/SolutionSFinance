@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SodruzhestvoFinance.Areas.Administration.Models;
+using SodruzhestvoFinance.Areas.Employees.Models;
 
 namespace SodruzhestvoFinance.Data
 {
@@ -10,5 +11,7 @@ namespace SodruzhestvoFinance.Data
             : base(options)
         {
         }
+
+        public DbSet<Employee> Employees { get; set; }
     }
 }
