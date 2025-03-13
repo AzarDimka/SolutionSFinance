@@ -27,14 +27,20 @@
                 <td>@item.Name</td>
                 <td u-role="@item.Id"></td>
                 <td>
-                    <a class="btn btn-sm btn-secondary" asp-area="Administration" asp-controller="Role" asp-action="Update" asp-route-id="@item.Id">Update</a>
+                    @using (Html.BeginForm("Update", "Role", FormMethod.Get))
+                    {
+                        @Html.Hidden("id", item.Id)
+                        <button type="submit" class="btn btn-sm btn-secondary">Обновить</button>
+                    }
                 </td>
                 <td>
-                    <form asp-area="Administration" asp-controller="Role" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                    @using (Html.BeginForm("Delete", "Role",  FormMethod.Post))
+                    {
+                        @Html.Hidden("id", item.Id)
                         <button type="submit" class="btn btn-sm btn-danger">
-                            Delete
+                            Удалить
                         </button>
-                    </form>
+                    }
                 </td>
             </tr>
         }

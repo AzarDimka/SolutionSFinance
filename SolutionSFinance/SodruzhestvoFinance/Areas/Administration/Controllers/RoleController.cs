@@ -41,7 +41,12 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Отображает страницу редактирования роли, включая информацию о роли и списках пользователей, являющихся и не являющихся ее членами.
+        /// </summary>
+        /// <param name="id">ID роли, которую необходимо отредактировать.</param>
+        /// <returns>Представление (View) с моделью RoleEdit, содержащей информацию о роли и списках пользователей.</returns>
+        [HttpGet]
         public async Task<IActionResult> Update(string id)
         {
             ApplicationRole role = await _manager.FindByIdAsync(id);
@@ -60,6 +65,11 @@ namespace SodruzhestvoFinance.Areas.Administration.Controllers
             });
         }
 
+        /// <summary>
+        /// Обрабатывает отправку формы редактирования роли, обновляя имя роли и членство пользователей.
+        /// </summary>
+        /// <param name="model">Модель RoleModification, содержащая данные формы, включая ID роли, новое имя роли и списки пользователей для добавления/удаления.</param>
+        /// <returns>Перенаправление на страницу списка ролей (Index) после успешного обновления.  Возвращает BadRequest в случае ошибок добавления/удаления пользователей.</returns>
         [HttpPost]
         public async Task<IActionResult> Update([FromForm] RoleModification model)
         {

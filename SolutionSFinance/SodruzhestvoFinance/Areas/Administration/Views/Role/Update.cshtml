@@ -12,7 +12,8 @@
 <form method="post">
     <input type="hidden" name="roleId" value="@Model.Role.Id" />
     <h2 class="bg-info p-1 text-white">Изменить название</h2>
-    <input asp-for="@Model.Role.Name" type="text" class="form-control p-1" name="roleName" id="roleName" placeholder="Название роли...">
+
+    <input type="text" class="form-control p-1" name="roleName" id="roleName" placeholder="Название роли..." value="@Model.Role.Name">
 
     <h2 class="bg-info p-1 text-white">Добавить в @Model.Role.Name</h2>
     <table class="table table-bordered table-sm">
