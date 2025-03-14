@@ -1,0 +1,15 @@
+﻿@using SFinance.Data
+@model HandbookModel
+@{
+    string idToastHandbook = "HandbookToast" + Model.Handbook.IdHandbook;
+}
+
+<div class="toast position-fixed m-0" role="alert" aria-live="assertive" aria-atomic="true" id="@idToastHandbook">
+    <div class="toast-header">
+        <strong class="me-auto">Информация</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        <span>@Model.StatusInser.MassageText</span>
+    </div>
+</div>

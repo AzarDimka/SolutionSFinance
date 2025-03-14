@@ -19,4 +19,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SFinance.Data\SFinance.Data.csproj" />
+  </ItemGroup>
+
 </Project>

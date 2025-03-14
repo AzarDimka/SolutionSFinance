@@ -1,0 +1,26 @@
+﻿@using SodruzhestvoFinance.Helpers
+@model HandbookModel
+@{
+    string idHandbookBodyToHtml = "HandbookBody" + Model.Handbook.IdHandbook.ToString();
+
+    string idTextKey = $"KeyFieldValue{@Model.Handbook.IdHandbook}";
+    string idTextVisible = $"VisibleFieldValue{@Model.Handbook.IdHandbook}";
+}
+
+<div class="modal fade" id="@Model.IdHandbookToHtml" tabindex="-1" aria-labelledby="HandbookTitel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="HandbookTitel">@Model.Handbook.NameHandbook</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body" id=@idHandbookBodyToHtml></div>
+            <div class="modal-footer">
+                @if (Model.IsReturnSelectValue) {
+                    @Html.ButtonReturnSelectValue("Выбрать", "btn btn-success", new { IdHandbook = Model.Handbook.IdHandbook, ReturnSelectValue = "true"})
+                }
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Закрыть">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

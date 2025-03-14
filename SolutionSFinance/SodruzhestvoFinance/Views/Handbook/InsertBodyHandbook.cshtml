@@ -1,0 +1,24 @@
+﻿@using SFinance.Data;
+@using SodruzhestvoFinance.Helpers;
+@model HandbookModel;
+@{
+    List<Field> fieldsModel = Model.Handbook.Fields;
+}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <input type="hidden" name="Handbook.IdHandbook" value="@Model.Handbook.IdHandbook" />
+    @foreach (var field in fieldsModel)
+    {
+        <div class="row mb-2">
+            <div class="col-12">
+                <label>@field.NameVisible</label>
+                <input type="text" name="FieldsInsert[@field.NameFieldToQuery]" value="" class="form-control" />
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            @Html.ButtonSaveValuesInsertHandbook("Сохранить", "btn btn-outline-success float-end ms-2", new { IdHandbook = Model.Handbook.IdHandbook })
+            @Html.ButtonMainBodyHandbook("К справочнику", "btn btn-outline-primary float-end", new { IdHandbook = Model.Handbook.IdHandbook })
+        </div>
+    </div>
+</div>

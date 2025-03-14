@@ -1,0 +1,40 @@
+﻿@using SFinance.Data;
+@using SodruzhestvoFinance.Helpers;
+@model HandbookModel;
+@{
+    List<Field> fieldsModel = Model.Handbook.Fields;
+}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+
+    <input type="hidden" name="Handbook.IdHandbook" value="@Model.Handbook.IdHandbook" />
+    <input type="hidden" name="KeyFieldValue" value="@Model.KeyFieldValue" />
+
+    @{
+        string fieldKey = Model.Handbook.KeyField;
+        int keyValue = Model.KeyFieldValue;
+
+        var fieldsValue = Model.Handbook.FieldsValue.Where(fv => fv.ContainsKey(fieldKey) &&
+            fv[fieldKey] is int value &&
+            value == keyValue)
+            .FirstOrDefault();
+    }
+
+    @foreach (var field in fieldsModel)
+    {
+        var fieldValue = fieldsValue.Where(w => w.Key == field.NameFieldToQuery).Select(fv => fv.Value).FirstOrDefault();
+
+        <div class="row mb-2">
+            <div class="col-12">
+                <label>@field.NameVisible</label>
+                <input type="text" name="FieldsInsert[@field.NameFieldToQuery]" value="@fieldValue" class="form-control" />
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            @Html.ButtonSaveValuesUpdateHandbook("Сохранить", "btn btn-outline-success float-end ms-2", new { IdHandbook = Model.Handbook.IdHandbook })
+            @Html.ButtonMainBodyHandbook("К справочнику", "btn btn-outline-primary float-end", new { IdHandbook = Model.Handbook.IdHandbook })
+        </div>
+    </div>
+</div>

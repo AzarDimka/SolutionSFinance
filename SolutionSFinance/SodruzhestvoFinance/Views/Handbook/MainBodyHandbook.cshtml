@@ -1,0 +1,151 @@
+﻿@using SFinance.Data
+@using SodruzhestvoFinance.Helpers;
+@model HandbookModel
+@{
+    List<Field> headerTableHandbook = Model.Handbook.Fields;
+    List<Dictionary<string, object>> bodyTableHandbook = Model.Handbook.FieldsValue;
+
+    var badyInsertButton = Html.TegByName("span", new { Class = "fa fa-plus" });
+    var badyRetrievalButton = Html.TegByName("span", new { Class = "fa fa-search" });
+    var badyUpdateButton = Html.TegByName("span", new { Class = "fa fa-pencil" });
+    var badyDeleteButton = Html.TegByName("span", new { Class = "fa fa-trash" });
+
+    bool isSelectValue = Model.KeyFieldValue != 0 && !String.IsNullOrEmpty(Model.VisibleFieldValue);
+
+    string selectValue = isSelectValue ? "{ key: '" + Model.KeyFieldValue + "', value: '" + Model.VisibleFieldValue + "' }" : "null";
+}
+
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Введите текст" aria-label="Введите текст" value="@Model.InputField">
+    @Html.ButtonRetrievalValuesHandbook(
+                            badyRetrievalButton,
+                            "btn btn-outline-primary",
+                            new { IdHandbook = Model.Handbook.IdHandbook },
+                            selectValue,
+                            dataBsTitle: "Поиск",
+                            dataBsToggle: "tooltip"
+                        )
+    @Html.ButtonInsertValueHandbook(
+                        badyInsertButton,
+                        "btn btn-outline-primary",
+                        new { IdHandbook = Model.Handbook.IdHandbook },
+                        dataBsTitle: "Добавить запись",
+                        dataBsToggle: "tooltip"
+                    )
+    @Html.ButtonUpdateValues(
+                        badyUpdateButton,
+                        "btn btn-outline-primary",
+                        !isSelectValue ?
+                            new { IdHandbook = Model.Handbook.IdHandbook, Disabled = isSelectValue } :
+                            new { IdHandbook = Model.Handbook.IdHandbook },
+                        selectValue,
+                        dataBsTitle: "Изменить запись",
+                        dataBsToggle: "tooltip"
+                    )
+    @Html.ButtonDeleteValues(
+                        badyDeleteButton,
+                        "btn btn-outline-primary",
+                        !isSelectValue ?
+                            new { IdHandbook = Model.Handbook.IdHandbook, Disabled = isSelectValue, Page = Model.PageNum, inputField = Model.InputField } :
+                            new { IdHandbook = Model.Handbook.IdHandbook, Page = Model.PageNum, inputField = Model.InputField },
+                        selectValue,
+                        dataBsTitle: "Удалить запись",
+                        dataBsToggle: "tooltip"
+                    )
+</div>
+<div class="w-100 mb-2" style="max-height: 400px; overflow: auto; border: 1px solid #d6cece;">
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <td></td>
+            @{
+                foreach (var header in headerTableHandbook)
+                {
+                    <td>@header.NameVisible</td>
+                }
+            }
+        </tr>
+        @{
+            if (Model.Handbook.FieldsValue.Count != 0)
+            {
+                string fieldKey = Model.Handbook.KeyField;
+                string fieldVisible = Model.Handbook.VisibleField;
+
+                foreach (var body in bodyTableHandbook)
+                {
+                    string? trClassName = Model.KeyFieldValue == (int)body[fieldKey]
+                    && Model.VisibleFieldValue == (string)body[fieldVisible] ? "table-primary" : null;
+
+                    <tr class="@trClassName">
+                        @{
+                            var fieldsValue = bodyTableHandbook.Where(fv => fv.ContainsKey(fieldKey)
+                            && fv.ContainsKey(fieldVisible)
+                            && fv.Any(a => body[fieldKey] == a.Value)
+                            && fv.Any(a => body[fieldVisible] == a.Value)
+                            ).FirstOrDefault();
+
+                            var spanToSelect = (TagBuilder)Html.TegByName("span", null);
+
+                            spanToSelect.InnerHtml.Append(("Выбрать").ToString());
+
+                            string select = "{ key: '" + fieldsValue[fieldKey] + "', value: '" + (fieldsValue[fieldVisible] ?? "null") + "' }";
+                        }
+                        <td>
+                            @Html.ActionMainBodyHandbook(spanToSelect, null, new { IdHandbook = Model.Handbook.IdHandbook }, Model.PageNum, Model.InputField, select)
+                        </td>
+                        @foreach (var valuePairs in body)
+                        {
+                            object value = valuePairs.Value;
+
+                            if (value is string stringValue)
+                            {
+                                <td>@stringValue</td>
+                            }
+                            else if (value is int intValue)
+                            {
+                                <td>@intValue</td>
+                            }
+                        }
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr class="text-center"><td colspan="@(headerTableHandbook.Count + 1)">Записей нет!</td></tr>
+            }
+        }
+    </table>
+</div>
+
+<nav aria-label="Навигация" class="d-flex justify-content-center">
+    <ul class="pagination">
+        @{
+            int count = Model.PageCount;
+            int pageNum = Model.PageNum;
+            int pageMin = pageNum - 3 <= 0 ? 0 : pageNum - 3;
+            int pageMax = pageNum + 4 >= count ? count : pageNum + 4;
+            for (int i = pageMin; i < pageMax; i++)
+            {
+                if (pageNum == i)
+                {
+                    <li class="page-item">
+                        <a class="page-link active">
+                            <span aria-hidden="true">@(i + 1)</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        @{
+                            var span = (TagBuilder)Html.TegByName("span", null);
+
+                            span.InnerHtml.Append((i + 1).ToString());
+                        }
+
+                        @Html.ActionMainBodyHandbook(span, "page-link", new { IdHandbook = Model.Handbook.IdHandbook }, i, Model.InputField, selectValue)
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>
