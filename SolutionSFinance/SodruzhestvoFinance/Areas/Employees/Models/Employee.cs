@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SodruzhestvoFinance.Areas.Employees.Models
 {
+    [Table("Employee")]
     public class Employee
     {
         public int EmployeeId { get; set; }

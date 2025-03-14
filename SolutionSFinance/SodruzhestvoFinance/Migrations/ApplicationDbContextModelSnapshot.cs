@@ -252,11 +252,12 @@ namespace SodruzhestvoFinance.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Salary")
-                        .HasColumnType("decimal(18,2)");
+                        .IsRequired()
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("EmployeeId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
