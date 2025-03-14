@@ -45,16 +45,6 @@
         @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
     </div>
 
-    @if (Model.Salary == null)
-    {
-
-    }
-    else
-    {
-
-
-    }
-
     <div class="form-group">
         @Html.LabelFor(model => model.Salary, htmlAttributes: new { @class = "control-label" })
         <div class="input-group">
