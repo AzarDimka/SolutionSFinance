@@ -54,4 +54,13 @@
         <input type="submit" value="Удалить" class="btn btn-danger" /> |
         <a asp-area="Employees" asp-controller="Employees" asp-action="Index">Вернуться к списку</a>
     </form>
+    @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+    {
+        @Html.Hidden("id", Model.EmployeeId)
+        <button type="submit" class="btn btn-sm btn-primary mr-1">Редактировать</button>
+    }
+    @using (Html.BeginForm("Index", "Employees", FormMethod.Get, new { area = "Employees" }))
+    {
+        <button type="submit" class="btn btn-secondary">Вернуться к списку</button>
+    }
 </div>
