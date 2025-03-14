@@ -1,0 +1,65 @@
+﻿@model SodruzhestvoFinance.Areas.Employees.Models.Employee
+
+@{
+    ViewData["Title"] = "Детали сотрудника";
+    Layout = "_Layout";
+}
+
+<h1>Детали сотрудника</h1>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Position)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Position)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ContactPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ContactPhone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="Employees" asp-controller="Employees" asp-action="Edit" asp-route-id="@Model.EmployeeId">Редактировать</a> |
+    <a asp-area="Employees" asp-controller="Employees" asp-action="Index">Вернуться к списку</a>
+
+    @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+    {
+        @Html.Hidden("id", Model.EmployeeId)
+        <button type="submit" class="btn btn-sm btn-primary mr-1">Редактировать</button>
+    }
+    @using (Html.BeginForm("Index", "Employees", FormMethod.Get, new { area = "Employees" }))
+    {
+        <button type="submit" class="btn btn-secondary">Вернуться к списку</button>
+    }
+</div>

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7A23DB13-BD67-450E-83A1-9D1FA2BCFD35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SodruzhestvoFinance", "SodruzhestvoFinance\SodruzhestvoFinance.csproj", "{55D5E30D-F272-4360-A4B9-ABA0BCFEEE93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SodruzhestvoFinance", "SodruzhestvoFinance\SodruzhestvoFinance.csproj", "{55D5E30D-F272-4360-A4B9-ABA0BCFEEE93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFinance.Data", "SFinance.Data\SFinance.Data.csproj", "{64863664-2608-43B9-BA6A-3D15736B6236}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFinance.Data", "SFinance.Data\SFinance.Data.csproj", "{64863664-2608-43B9-BA6A-3D15736B6236}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

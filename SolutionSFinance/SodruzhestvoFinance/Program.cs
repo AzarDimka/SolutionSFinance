@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SodruzhestvoFinance.Areas.Administration.Models;
 using SFinance.Data.DataBase;
-using SFinance.Data.Services;
-using SodruzhestvoFinance.Data;
+using SFinance.Data.Services;using SodruzhestvoFinance.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,16 +11,18 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<Context>(options =>
-	options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+	options.UseSqlServer(connectionString));builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{ 
+    options.SignIn.RequireConfirmedAccount = false;
+})
+    .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IHandbookServices, HandbookServices>();
 builder.Services.AddScoped<IManagerHandbook, ManagerHandbook>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +43,16 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapAreaControllerRoute(
+    name: "Administration",
+    areaName: "Administration",
+    pattern: "Administration/{controller=UserAccount}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "Employees",
+    areaName: "Employees",
+    pattern: "Employees/{controller=UserAccount}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

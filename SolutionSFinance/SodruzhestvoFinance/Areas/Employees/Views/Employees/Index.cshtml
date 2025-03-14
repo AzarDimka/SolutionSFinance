@@ -1,0 +1,68 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Сотрудники";
+    Layout = "_Layout";
+}
+
+@model IEnumerable<SodruzhestvoFinance.Areas.Employees.Models.Employee>
+
+<h1>Сотрудники</h1>
+
+@using (Html.BeginForm("EmployeeCreationPage", "Employees", FormMethod.Get, new { @class = "mb-3" }))
+{
+    <button type="submit" class="btn btn-sm btn-success">Создать нового сотрудника</button>
+}
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Должность</th>
+            <th>Телефон</th>
+            <th>Зарплата</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @($"{item.LastName} {item.FirstName} {item.MiddleName}")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactPhone)
+                </td>
+                <td>
+                    @if (item.Salary.HasValue)
+                    {
+                        @item.Salary.Value.ToString("C", CultureInfo.CurrentCulture)
+                    }
+                </td>
+                <td>
+                    <div class="d-flex">
+                        @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+                        {
+                            @Html.Hidden("id", item.EmployeeId)
+                            <button type="submit" class="btn btn-sm btn-primary mr-3">Редактировать</button>
+                        }
+                        @* Доделать позже, доп информация о сотруднике *@
+                        @* @using (Html.BeginForm("Details", "Employees", FormMethod.Get, new { id = item.EmployeeId }))
+                        {
+                            @Html.Hidden("id", item.EmployeeId)
+                            <button type="submit" class="btn btn-sm btn-info mr-3">Детали</button>
+                        } *@
+                        @using (Html.BeginForm("Delete", "Employees", FormMethod.Post, new { id = item.EmployeeId }))
+                        {
+                            @Html.Hidden("id", item.EmployeeId)
+                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

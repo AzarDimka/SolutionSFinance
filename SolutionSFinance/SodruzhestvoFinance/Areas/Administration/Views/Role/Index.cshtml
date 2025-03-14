@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Роли";
+    Layout = "_Layout";
+}
+
+@using SodruzhestvoFinance.Areas.Administration.Models
+@model IEnumerable<ApplicationRole>
+@addTagHelper SodruzhestvoFinance.TagHelpers.*, SodruzhestvoFinance
+
+@Html.Partial("_AddRole")
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Пользователи</th>
+            <th scope="col">Редактировать</th>
+            <th scope="col">Удалить</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td u-role="@item.Id"></td>
+                <td>
+                    @using (Html.BeginForm("Update", "Role", FormMethod.Get))
+                    {
+                        @Html.Hidden("id", item.Id)
+                        <button type="submit" class="btn btn-sm btn-secondary">Обновить</button>
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Role",  FormMethod.Post))
+                    {
+                        @Html.Hidden("id", item.Id)
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Удалить
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
