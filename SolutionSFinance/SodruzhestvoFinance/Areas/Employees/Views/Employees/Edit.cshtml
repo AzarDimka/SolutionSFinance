@@ -76,31 +76,3 @@
         <input type="submit" value="Сохранить" class="btn btn-primary" />
     </div>
 }
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval") // Подключаем jQuery Validation
-
-    <script>
-        $(document).ready(function () {
-            // Форматирование при вводе
-            $('.salary-input').on('input', function () {
-                // Удаляем все символы, кроме цифр
-                var value = $(this).val().replace(/[^0-9]/g, '');
-
-                // Форматируем число с разделителями тысяч (необязательно)
-                // value = value.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-                $(this).val(value);
-            });
-
-            // Валидация перед отправкой формы (используем jQuery Validation)
-            $('form').submit(function (event) {
-                // Проверяем, что поле Salary содержит только цифры
-                if (!/^\d+$/.test($('.salary-input').val())) {
-                    alert('Пожалуйста, введите корректное число для зарплаты.');
-                    event.preventDefault(); // Предотвращаем отправку формы
-                }
-            });
-        });
-    </script>
-}
