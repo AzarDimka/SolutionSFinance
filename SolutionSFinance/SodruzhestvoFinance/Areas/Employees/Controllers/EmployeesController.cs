@@ -77,7 +77,7 @@ namespace SodruzhestvoFinance.Areas.Employees.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,LastName,FirstName,MiddleName,Position,ContactPhone,Salary")] Employee employee)
+        public async Task<IActionResult> EditSave(int id, [Bind("EmployeeId,LastName,FirstName,MiddleName,Position,ContactPhone,Salary")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
@@ -104,36 +104,27 @@ namespace SodruzhestvoFinance.Areas.Employees.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                //return Json(new { success = false, message = "Сотрудник не найден" }); // Возвращаем JSON с ошибкой
+                return NotFound();
+            }
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            //return Json(new { success = true, message = "Сотрудник успешно удален" }); // Возвращаем JSON об успехе
+            return RedirectToAction("Index");
+        }
+
 
         private bool EmployeeExists(int id)
         {
