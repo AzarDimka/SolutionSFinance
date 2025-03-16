@@ -44,22 +44,27 @@
                 </td>
                 <td>
                     <div class="d-flex">
-                        @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
-                        {
-                            @Html.Hidden("id", item.EmployeeId)
-                            <button type="submit" class="btn btn-sm btn-primary mr-3">Редактировать</button>
-                        }
+                        <div class="mx-2">
+                            @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+                            {
+                                @Html.Hidden("id", item.EmployeeId)
+                                <button type="submit" class="btn btn-sm btn-primary mr-3">Редактировать</button>
+                            }
+                        </div>
+                        <div class="mx-2">
+                            @using (Html.BeginForm("Delete", "Employees", FormMethod.Post, new { id = item.EmployeeId }))
+                            {
+                                @Html.Hidden("id", item.EmployeeId)
+                                <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                            }
+                        </div>
                         @* Доделать позже, доп информация о сотруднике *@
                         @* @using (Html.BeginForm("Details", "Employees", FormMethod.Get, new { id = item.EmployeeId }))
                         {
                             @Html.Hidden("id", item.EmployeeId)
                             <button type="submit" class="btn btn-sm btn-info mr-3">Детали</button>
                         } *@
-                        @using (Html.BeginForm("Delete", "Employees", FormMethod.Post, new { id = item.EmployeeId }))
-                        {
-                            @Html.Hidden("id", item.EmployeeId)
-                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
-                        }
+                        
                     </div>
                 </td>
             </tr>
