@@ -6,8 +6,19 @@
 <p>
     <a asp-area="Employees" asp-controller="Employees" asp-action="Index" class="btn btn-primary">Сотрудники</a>
 </p>
+
+<p>
+    <a asp-area="Loan" asp-controller="Loan" asp-action="Index" class="btn btn-primary">Займы</a>
+</p>
+
 <div class="row">
     <div class="col-5">
         @Html.InputHandbook("idInput1", new { IdHandbook = 1, isReturnSelectValue = true })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-5">
+        @Html.InputHandbook("idInput1", new { IdHandbook = 6, isReturnSelectValue = true })
     </div>
 </div>

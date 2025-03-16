@@ -1,0 +1,68 @@
+﻿@using SodruzhestvoFinance.Helpers
+@{
+    ViewData["Title"] = "Оформление займа";
+    Layout = "_Layout";
+}
+
+@model SodruzhestvoFinance.Areas.Loan.Models.LoanIssueViewModel
+
+
+<h1>Оформление займа</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label">Пайщик</label>
+                <select asp-for="EmployeeId" class="form-control" asp-items="Model.Employees">
+                    
+                </select>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    @Html.InputHandbook("idInput1", new { IdHandbook = 1, isReturnSelectValue = true })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoanAmount" class="control-label">Сумма займа</label>
+                <input asp-for="LoanAmount" class="form-control" />
+                <span asp-validation-for="LoanAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="InterestRate" class="control-label">Процентная ставка (%)</label>
+                <input asp-for="InterestRate" class="form-control" />
+                <span asp-validation-for="InterestRate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoanTerm" class="control-label">Срок займа (месяцы)</label>
+                <input asp-for="LoanTerm" class="form-control" />
+                <span asp-validation-for="LoanTerm" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IssueDate" class="control-label">Дата выдачи</label>
+                <input asp-for="IssueDate" class="form-control" type="date" />
+                <span asp-validation-for="IssueDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Оформить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
