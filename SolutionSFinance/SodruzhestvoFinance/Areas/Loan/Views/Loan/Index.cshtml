@@ -66,8 +66,29 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.LoanId" class="btn btn-sm btn-outline-primary">Редактировать</a> |
-                    <a asp-action="Delete" asp-route-id="@item.LoanId" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    <div class="d-flex">
+                        <div class="mx-2">
+                            @using (Html.BeginForm("Edit", "Employees", FormMethod.Get))
+                            {
+                                @Html.Hidden("id", item.EmployeeId)
+                                <button type="submit" class="btn btn-sm btn-primary mr-3">Редактировать</button>
+                            }
+                        </div>
+                        <div class="mx-2">
+                            @using (Html.BeginForm("Delete", "Employees", FormMethod.Post, new { id = item.EmployeeId }))
+                            {
+                                @Html.Hidden("id", item.EmployeeId)
+                                <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                            }
+                        </div>
+                        @* Доделать позже, доп информация о сотруднике *@
+                        @* @using (Html.BeginForm("Details", "Employees", FormMethod.Get, new { id = item.EmployeeId }))
+                    {
+                    @Html.Hidden("id", item.EmployeeId)
+                    <button type="submit" class="btn btn-sm btn-info mr-3">Детали</button>
+                    } *@
+
+                    </div>
                 </td>
             </tr>
         }
