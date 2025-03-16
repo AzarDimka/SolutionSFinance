@@ -26,27 +26,27 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult LoanCreationPage()
         {
-            // 1. Получение списка сотрудников из базы данных
-            var employees = _context.Employees.ToList();
+            //// 1. Получение списка сотрудников из базы данных
+            //var employees = _context.Employees.ToList();
 
-            // 2. Создание списка SelectListItem для DropDownList
-            var employeeList = employees.Select(e => new SelectListItem
-            {
-                Value = e.EmployeeId.ToString(),
-                Text = e.LastName // Или e.FirstName + " " + e.LastName, в зависимости от того, как вы храните имя
-            }).ToList();
+            //// 2. Создание списка SelectListItem для DropDownList
+            //var employeeList = employees.Select(e => new SelectListItem
+            //{
+            //    Value = e.EmployeeId.ToString(),
+            //    Text = e.LastName // Или e.FirstName + " " + e.LastName, в зависимости от того, как вы храните имя
+            //}).ToList();
 
-            // 3. Создание ViewModel и передача списка сотрудников
-            var viewModel = new LoanIssueViewModel
-            {
-                Employees = employeeList,
-                IssueDate = DateTime.Today //Установим значение по умолчанию
-            };
+            //// 3. Создание ViewModel и передача списка сотрудников
+            //var viewModel = new LoanIssueViewModel
+            //{
+            //    Employees = employeeList,
+            //    IssueDate = DateTime.Today //Установим значение по умолчанию
+            //};
 
             // 4. Передача ViewModel в представление
-            return View(viewModel);
+            return View("Create");
         }
 
         [HttpPost]
