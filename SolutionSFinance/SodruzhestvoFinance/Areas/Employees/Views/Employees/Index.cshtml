@@ -1,12 +1,12 @@
 ﻿@using System.Globalization;
 @{
-    ViewData["Title"] = "Сотрудники";
+    ViewData["Title"] = "Пайщики";
     Layout = "_Layout";
 }
 
 @model IEnumerable<SodruzhestvoFinance.Areas.Employees.Models.Employee>
 
-<h1>Сотрудники</h1>
+<h1>Пайщики</h1>
 
 @using (Html.BeginForm("EmployeeCreationPage", "Employees", FormMethod.Get, new { @class = "mb-3" }))
 {

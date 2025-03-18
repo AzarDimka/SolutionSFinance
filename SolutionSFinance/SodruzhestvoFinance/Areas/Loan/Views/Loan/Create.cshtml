@@ -4,16 +4,13 @@
     Layout = "_Layout";
 }
 
-@model SodruzhestvoFinance.Areas.Loan.Models.LoanIssueViewModel
-
+@model SodruzhestvoFinance.Areas.Loan.Models.Loan
 
 <h1>Оформление займа</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-
-        
 
         @using (Html.BeginForm("Create", "Loan", FormMethod.Post, new { area = "Loan" }))
         {
