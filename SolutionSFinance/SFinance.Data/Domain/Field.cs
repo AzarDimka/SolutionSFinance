@@ -1,4 +1,6 @@
-﻿namespace SFinance.Data
+﻿using SFinance.Data.DataBase;
+
+namespace SFinance.Data
 {
     public class Field
     {
@@ -12,13 +14,22 @@
 
         public TypeData TypeData { get; set; }
 
-        public Field(int idField, string nameFieldToQuery, string nameVisible, TypeData typeData, int? idRefHandbook = null)
+        public bool IsVisible { get; set; }
+
+        public bool IsEdit { get; set; }
+
+        public bool IsNull { get; set; }
+
+        public Field(FieldEntity entit)
         {
-            IdField = idField;
-            NameFieldToQuery = nameFieldToQuery;
-            NameVisible = nameVisible;
-            IdRefHandbook = idRefHandbook;
-            TypeData = typeData;
+            IdField = entit.IdField;
+            NameFieldToQuery = entit.NameToQuery;
+            NameVisible = entit.NameVisible;
+            IdRefHandbook = entit.RefHandbookToField;
+            TypeData = (TypeData)entit.IdTypeData;
+            IsVisible = entit.IsVisible;
+            IsEdit = entit.IsEdit;
+            IsNull = entit.IsNull;
         }
     }
 }

@@ -14,7 +14,11 @@
 
         public List<Dictionary<string, object>> FieldsValue { get; set; }
 
-        public Handbook(int idHandbook, string nameHandbook, string keyField, string visibleField)
+        public float Height { get; set; }
+
+        public  float Width { get; set; }
+
+        public Handbook(int idHandbook, string nameHandbook, string keyField, string visibleField, float height, float width)
         {
             NameHandbook = nameHandbook;
             IdHandbook = idHandbook;
@@ -22,6 +26,8 @@
             FieldsValue = new List<Dictionary<string, object>>();
             KeyField = keyField;
             VisibleField = visibleField;
+            Height = height;
+            Width = width;
         }
     }
 }

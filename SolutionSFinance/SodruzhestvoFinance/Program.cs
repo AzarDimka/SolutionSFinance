@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SodruzhestvoFinance.Areas.Administration.Models;
 using SFinance.Data.DataBase;
 using SFinance.Data.Services;using SodruzhestvoFinance.Data;
+using SodruzhestvoFinance.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IHandbookServices, HandbookServices>();
 builder.Services.AddScoped<IManagerHandbook, ManagerHandbook>();
+
+var serviceProvider = builder.Services.BuildServiceProvider();
+HandbookHelpers.Initialize(serviceProvider.GetRequiredService<IHandbookServices>());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,6 +58,11 @@ app.MapAreaControllerRoute(
     name: "Employees",
     areaName: "Employees",
     pattern: "Employees/{controller=UserAccount}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "Loan",
+    areaName: "Loan",
+    pattern: "Loan/{controller=UserAccount}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

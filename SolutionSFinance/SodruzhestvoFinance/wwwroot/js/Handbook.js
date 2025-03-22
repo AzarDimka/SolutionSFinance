@@ -76,10 +76,21 @@ function setDisplayLoadingIndicator(style) {
 function getMainBodyHandbook(idHandbook, page = 0, inputField = null) {
     const callback = (data) => {
         var handbookBody = $('#HandbookBody' + idHandbook);
+
         handbookBody.append(data);
+
+        showFooterHandbook(handbookBody[0].offsetParent);
     }
 
     sendAjaxRequest('/Handbook/GetMainBodyHandbookHTML', 'GET', { idHandbook: idHandbook, page: page, inputField: inputField, selectValue: null }, callback);
+}
+
+function showFooterHandbook(handbookContent) {
+    var footer = handbookContent.querySelectorAll('.modal-footer')[0];
+
+    if (footer.classList.contains('visually-hidden')) {
+        footer.classList.remove('visually-hidden');
+    }
 }
 
 function buttonInsertValuesHandbook(button) {
@@ -91,6 +102,8 @@ function buttonInsertValuesHandbook(button) {
         handbookBody.empty();
 
         handbookBody.append(data);
+
+        hideFooterHandbook(handbookBody[0].offsetParent);
     }
 
     sendAjaxRequest('/Handbook/GetInsertBodyHTML', 'GET', { idHandbook: idHandbookButton }, callback);
@@ -103,8 +116,12 @@ function buttonMainBodyHandbook(button, page, inputField, selectValue) {
 
     const callback = (data) => {
         var handbookBody = $('#HandbookBody' + idHandbookButton);
-        handbookBody.empty(); 
+
+        handbookBody.empty();
+
         handbookBody.append(data);
+
+        showFooterHandbook(handbookBody[0].offsetParent);
     }
 
     sendAjaxRequest('/Handbook/GetMainBodyHandbookHTML', 'GET', { idHandbook: idHandbookButton, page: page, inputField: inputField, selectValue: selectValue }, callback);
@@ -198,11 +215,23 @@ function buttonUpdateValue(button, selectValue) {
 
     const callback = (data) => {
         var handbookBody = $('#HandbookBody' + idHandbookButton);
+
         handbookBody.empty();
+
         handbookBody.append(data);
+
+        hideFooterHandbook(handbookBody[0].offsetParent);
     }
 
     sendAjaxRequest('/Handbook/GetUpdateBodyHTML', 'Get', { idHandbook: idHandbookButton, selectValue: selectValue }, callback);
+}
+
+function hideFooterHandbook(handbookContent) {
+    var footer = handbookContent.querySelectorAll('.modal-footer')[0];
+
+    if (!footer.classList.contains('visually-hidden')) {
+        footer.classList.add('visually-hidden');
+    }
 }
 
 function buttonDeleteValue(button, selectValue) {

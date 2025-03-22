@@ -1,0 +1,106 @@
+﻿@using SodruzhestvoFinance.Areas.Administration.Models
+@using SodruzhestvoFinance.Helpers
+@{
+	ViewData["Title"] = "Редактирование поля";
+	Layout = "_Layout";
+}
+@model FieldsHandbook
+
+<h1>Редактирование поля</h1>
+
+@using (Html.BeginForm("Update", "FieldsHandbook", FormMethod.Post))
+{
+	@Html.Hidden("FieldUpdate.IdHandbook", Model.Handbook.Id)
+	@Html.Hidden("FieldUpdate.IdField", Model.FieldUpdate.IdField)
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Название поля</label>
+			<input type="text" name="FieldUpdate.NameVisible" class="form-control" value="@Model.FieldUpdate.NameVisible"/>
+		</div>
+		<div class="col-6">
+			<label>Название поля в запросе</label>
+			<input type="text" name="FieldUpdate.NameToQuery" class="form-control" value="@Model.FieldUpdate.NameToQuery" />
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			@Html.InputHandbook("FieldUpdate.IdTypeData", "Тип данных поля", new { IdHandbook = 9, isReturnSelectValue = true, SelectValue = Model.FieldUpdate.IdTypeData })
+		</div>
+		<div class="col-6">
+			@Html.InputHandbook("FieldUpdate.RefHandbookToField", "Ссылка на справочник", new { IdHandbook = 8, isReturnSelectValue = true, SelectValue = Model.FieldUpdate.RefHandbookToField })
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-3">
+			<div class="form-check form-switch">
+				<label class="form-check-label">Необходимо отображать</label>
+				@if (Model.FieldUpdate.IsVisible)
+				{
+					<input type="checkbox" name="FieldUpdate.IsVisible" class="form-check-input" value="true" checked="checked"/>
+				}
+				else
+				{
+					<input type="checkbox" name="FieldUpdate.IsVisible" class="form-check-input" value="true" />
+				}
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="form-check form-switch">
+				<label class="form-check-label">Можно редактировать</label>
+				@if (Model.FieldUpdate.IsEdit)
+				{
+					<input type="checkbox" name="FieldUpdate.IsEdit" class="form-check-input" value="true" checked="checked"/>
+				}
+				else
+				{
+					<input type="checkbox" name="FieldUpdate.IsEdit" class="form-check-input" value="true" />
+				}
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="form-check form-switch">
+				<label class="form-check-label">Может содержать NULL</label>
+				@if (Model.FieldUpdate.IsNull)
+				{
+					<input type="checkbox" name="FieldUpdate.IsNull" class="form-check-input" value="true" checked="checked"/>
+				}
+				else
+				{
+					<input type="checkbox" name="FieldUpdate.IsNull" class="form-check-input" value="true" />
+				}
+			</div>
+		</div>
+		<div class="col-3">
+			<div class="form-check form-switch">
+				<label class="form-check-label">Проверять на дубли</label>
+				@if (Model.FieldUpdate.IsCheckDuplicate)
+				{
+					<input type="checkbox" name="FieldUpdate.IsCheckDuplicate" class="form-check-input" value="true" checked="checked"/>
+				}
+				else
+				{
+					<input type="checkbox" name="FieldUpdate.IsCheckDuplicate" class="form-check-input" value="true" />
+				}
+			</div>
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-3">
+			<label>Индекс</label>
+			<input type="number" name="FieldUpdate.IndexField" class="form-control" value="@Model.FieldUpdate.IndexField" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<button class="btn btn-outline-success pull-right ms-2" type="submit">Сохранить</button>
+			@Html.ActionLink("Вернуться", "Index", "FieldsHandbook", new { idHandbook = Model.Handbook.Id }, new { @class = "btn btn-outline-secondary pull-right" })
+		</div>
+	</div>
+}
+@if (Model != null && !String.IsNullOrEmpty(Model.MessageText))
+{
+	<div class="alert alert-dark alert-dismissible" role="alert" style="position: absolute;  right: 10px; bottom: 70px;">
+		<span>@Model.MessageText</span>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}

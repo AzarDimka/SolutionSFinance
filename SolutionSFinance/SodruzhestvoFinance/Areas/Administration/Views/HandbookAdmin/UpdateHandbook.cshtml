@@ -1,0 +1,62 @@
+﻿@using SodruzhestvoFinance.Areas.Administration.Models
+@{
+	ViewData["Title"] = "Обновление справочника";
+	Layout = "_Layout";
+}
+@model HandbookAdmin
+
+<h1>Обновление справочника "@Model.HandbookUpdate.NameHandbook"</h1>
+
+@using (Html.BeginForm("Update", "HandbookAdmin", FormMethod.Post))
+{
+	@Html.Hidden("HandbookUpdate.Id", Model.HandbookUpdate.Id)
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Название справочника</label>
+			<input type="text" name="HandbookUpdate.NameHandbook" class="form-control" value="@Model.HandbookUpdate.NameHandbook" />
+		</div>
+		<div class="col-6">
+			<label>Ключевое поле</label>
+			<input type="text" name="HandbookUpdate.KeyField" class="form-control" value="@Model.HandbookUpdate.KeyField" />
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Название таблицы справочника</label>
+			<input type="text" name="HandbookUpdate.TableName" class="form-control" value="@Model.HandbookUpdate.TableName" />
+		</div>
+		<div class="col-6">
+			<label>Поле выбора</label>
+			<input type="text" name="HandbookUpdate.SelectionField" class="form-control" value="@Model.HandbookUpdate.SelectionField" />
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-12">
+			<label>Запрос справочника</label>
+			<textarea name="HandbookUpdate.Request" class="form-control">@Model.HandbookUpdate.Request</textarea>
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Ширина справочника</label>
+			<input type="text" name="HandbookUpdate.Width" class="form-control" value="@Model.HandbookUpdate.Width" />
+		</div>
+		<div class="col-6">
+			<label>Высота справочника</label>
+			<input type="text" name="HandbookUpdate.Height" class="form-control" value="@Model.HandbookUpdate.Height" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<button class="btn btn-outline-success pull-right ms-2" type="submit">Сохранить</button>
+			@Html.ActionLink("Вернуться", "Index", "HandbookAdmin", new { }, new { @class = "btn btn-outline-secondary pull-right" })
+		</div>
+	</div>
+}
+@if (!String.IsNullOrEmpty(Model.MessageText))
+{
+	<div class="alert alert-dark alert-dismissible" role="alert" style="position: absolute;  right: 10px; bottom: 70px;">
+		<span>@Model.MessageText</span>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}

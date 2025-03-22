@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using SFinance.Data.Services;
 
 namespace SodruzhestvoFinance.Helpers
 {
     public static class HandbookHelpers
     {
-        public static IHtmlContent ButtonHandbook(this IHtmlHelper htmlHelper, object bodyButton, string cssClass, object htmlAttributes)
+	    private static IHandbookServices HandbookServices;
+
+	    public static void Initialize(IHandbookServices handbookServices)
+	    {
+		    HandbookServices = handbookServices;
+	    }
+
+		public static IHtmlContent ButtonHandbook(this IHtmlHelper htmlHelper, object bodyButton, string cssClass, object htmlAttributes)
         {
             var button = CreateButton(bodyButton, cssClass, "buttonShowHandbook(this)");
 
@@ -177,37 +185,78 @@ namespace SodruzhestvoFinance.Helpers
 			return button;
 		}
 
-        public static IHtmlContent InputHandbook(this IHtmlHelper htmlHelper, string idInput, object htmlAttributesButton)
-        {
-			TagBuilder div = new TagBuilder("div");
+        public static IHtmlContent InputHandbook(this IHtmlHelper htmlHelper, string idInput, string captionText,
+	        object htmlAttributesButton)
+		{
+	        var selectValue = GetSelectValueDictionary((Dictionary<string, object>)HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributesButton));
 
-            div.AddCssClass("input-group");
+	        TagBuilder div = CreateDivToInputHandbookBuilder(htmlHelper, idInput, htmlAttributesButton, selectValue);
 
-            var inputHidden = CreateInput(null, new { type = "hidden", id = idInput, name = idInput });
+			var htmlContentBuilder = new HtmlContentBuilder();
+			
+			var label = new TagBuilder("label");
 
-            var inputText = CreateInput("form-control", new { type = "text" });
+			label.InnerHtml.Append(captionText);
 
-            var span = new TagBuilder("span");
+			htmlContentBuilder.AppendHtml(label);
+			htmlContentBuilder.AppendHtml(div);
 
-			span.AddCssClass("fa fa-search");
-
-			IHtmlContent buttonHelper = null;
-
-			buttonHelper = htmlHelper.ButtonHandbook(span, "btn btn-outline-primary", htmlAttributesButton);
-
-			var spanClear = new TagBuilder("span");
-
-			spanClear.AddCssClass("fa fa-trash");
-
-			TagBuilder buttonClearValue = CreateButton(spanClear, "btn btn-outline-danger", $"buttonClearSelectValue(this)");
-
-			div.InnerHtml.AppendHtml(inputText);
-            div.InnerHtml.AppendHtml(inputHidden);
-			div.InnerHtml.AppendHtml(buttonHelper);
-			div.InnerHtml.AppendHtml(buttonClearValue);
-
-            return div;
+			return htmlContentBuilder;
 		}
+
+        private static Dictionary<string, string> GetSelectValueDictionary(Dictionary<string, object> htmlAttributesButton)
+        {
+	        var idHandbookKey = htmlAttributesButton?.Where(w => w.Key == "IdHandbook").FirstOrDefault().Value;
+	        var idSelectValue = htmlAttributesButton?.Where(w => w.Key == "SelectValue").FirstOrDefault().Value;
+
+	        Dictionary<string, string> result = new Dictionary<string, string>();
+
+	        if (idHandbookKey == null || idSelectValue == null)
+			{
+				return result;
+			}
+
+	        result = HandbookServices.GetKeyValueDictionary(Convert.ToInt32(idHandbookKey), Convert.ToInt32(idSelectValue));
+
+	        return result;
+        }
+
+		private static TagBuilder CreateDivToInputHandbookBuilder(IHtmlHelper htmlHelper, string idInput, object htmlAttributesButton,
+			Dictionary<string, string> selectValue)
+        {
+	        TagBuilder div = new TagBuilder("div");
+
+	        div.AddCssClass("input-group");
+
+	        string keySelect = selectValue.Where(w => w.Key == "key").FirstOrDefault().Value;
+
+	        string valueSelect = selectValue.Where(w => w.Key == "value").FirstOrDefault().Value;
+
+	        var inputHidden = CreateInput(null, new { type = "hidden", id = idInput, name = idInput, value = keySelect });
+
+	        var inputText = CreateInput("form-control", new { type = "text", value = valueSelect });
+
+	        var span = new TagBuilder("span");
+
+	        span.AddCssClass("fa fa-search");
+
+	        IHtmlContent buttonHelper = null;
+
+	        buttonHelper = htmlHelper.ButtonHandbook(span, "btn btn-outline-primary", htmlAttributesButton);
+
+	        var spanClear = new TagBuilder("span");
+
+	        spanClear.AddCssClass("fa fa-trash");
+
+	        TagBuilder buttonClearValue = CreateButton(spanClear, "btn btn-outline-danger", $"buttonClearSelectValue(this)");
+
+	        div.InnerHtml.AppendHtml(inputText);
+	        div.InnerHtml.AppendHtml(inputHidden);
+	        div.InnerHtml.AppendHtml(buttonHelper);
+	        div.InnerHtml.AppendHtml(buttonClearValue);
+
+	        return div;
+        }
 
         private static TagBuilder CreateInput(string cssClass, object htmlAttributes)
         {

@@ -1,0 +1,61 @@
+﻿@using SodruzhestvoFinance.Areas.Administration.Models
+@{
+	ViewData["Title"] = "Добавление справочника";
+	Layout = "_Layout";
+}
+@model HandbookAdmin
+
+<h1>Добавление справочника</h1>
+
+@using (Html.BeginForm("Add", "HandbookAdmin", FormMethod.Post))
+{
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Название справочника</label>
+			<input type="text" name="HandbookUpdate.NameHandbook" class="form-control" />
+		</div>
+		<div class="col-6">
+			<label>Ключевое поле</label>
+			<input type="text" name="HandbookUpdate.KeyField" class="form-control" />
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Название таблицы справочника</label>
+			<input type="text" name="HandbookUpdate.TableName" class="form-control" />
+		</div>
+		<div class="col-6">
+			<label>Поле выбора</label>
+			<input type="text" name="HandbookUpdate.SelectionField" class="form-control" />
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-12">
+			<label>Запрос справочника</label>
+			<textarea name="HandbookUpdate.Request" class="form-control"></textarea>
+		</div>
+	</div>
+	<div class="row mb-2">
+		<div class="col-6">
+			<label>Ширина справочника</label>
+			<input type="text" name="HandbookUpdate.Width" class="form-control" />
+		</div>
+		<div class="col-6">
+			<label>Высота справочника</label>
+			<input type="text" name="HandbookUpdate.Height" class="form-control" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<button class="btn btn-outline-success pull-right ms-2" type="submit">Сохранить</button>
+			@Html.ActionLink("Вернуться", "Index", "HandbookAdmin", new { }, new { @class = "btn btn-outline-secondary pull-right" })
+		</div>
+	</div>
+}
+@if (Model != null && !String.IsNullOrEmpty(Model.MessageText))
+{
+	<div class="alert alert-dark alert-dismissible" role="alert" style="position: absolute;  right: 10px; bottom: 70px;">
+		<span>@Model.MessageText</span>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}

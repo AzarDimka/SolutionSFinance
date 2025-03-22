@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SFinance.Data.DataBase;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices;
 
 namespace SFinance.Data.Services
 {
@@ -17,6 +12,11 @@ namespace SFinance.Data.Services
         public HandbookServices(Context context)
         {
             Context = context;
+        }
+
+        public List<HandbookEntity> GetHandbookEntities()
+        {
+	        return Context.Handbooks.OrderBy(o => o.NameHandbook).ToList();
         }
 
         public HandbookEntity GetHandbookById(int idHandbook)
@@ -30,7 +30,94 @@ namespace SFinance.Data.Services
             return result;
         }
 
-        public List<Dictionary<string, object>> GetDataFromDirectoryQuery(string handbookQuery)
+        public void UpdateHandbook(HandbookEntity model, out string message)
+        {
+	        if (model == null)
+	        {
+		        message = "Ошибка!";
+                return;
+	        }
+
+	        var entity = Context.Handbooks.Where(w => w.Id == model.Id).FirstOrDefault();
+
+	        if (entity != null)
+	        {
+		        entity.NameHandbook = model.NameHandbook;
+		        entity.TableName = model.TableName;
+		        entity.Request = model.Request;
+		        entity.KeyField = model.KeyField;
+		        entity.SelectionField = model.SelectionField;
+		        entity.Width = model.Width;
+		        entity.Height = model.Height;
+
+		        try
+		        {
+			        Context.SaveChanges();
+			        message = "Обновление выполнено успешно";
+		        }
+		        catch (Exception e)
+		        {
+			        message = e.Message;
+		        }
+	        }
+	        else
+	        {
+				message = $"Справочника с id {model.Id} не существует";
+	        }
+        }
+
+        public void AddHandbook(HandbookEntity model, out string message)
+        {
+	        if (model == null)
+	        {
+		        message = "Ошибка!";
+		        return;
+	        }
+
+	        var entity = new HandbookEntity()
+	        {
+		        NameHandbook = model.NameHandbook,
+		        TableName = model.TableName,
+		        Request = model.Request,
+		        KeyField = model.KeyField,
+		        SelectionField = model.SelectionField,
+		        Width = model.Width,
+		        Height = model.Height
+			};
+
+			try
+			{
+				Context.Handbooks.Add(entity);
+
+				Context.SaveChanges();
+
+				message = "Добавление выполнено успешно";
+			}
+			catch (Exception e)
+			{
+				message = e.Message;
+			}
+		}
+
+        public void DeleteHandbook(int idHandbook, out string message)
+        {
+	        var entity = Context.Handbooks.Where(w => w.Id == idHandbook).FirstOrDefault();
+
+	        try
+	        {
+		        Context.Handbooks.Remove(entity);
+
+		        Context.SaveChanges();
+
+		        message = "Удаление выполнено успешно";
+	        }
+	        catch (Exception e)
+	        {
+		        message = e.Message;
+	        }
+		}
+
+		public List<Dictionary<string, object>> GetDataFromDirectoryQuery(string handbookQuery)
         {
             var results = new List<Dictionary<string, object>>();
 
@@ -163,5 +250,147 @@ namespace SFinance.Data.Services
                 command.Parameters.Add(parameter);
             }
         }
-    }
+
+		public List<FieldEntity> GetFieldsEntityByIdHandbook(int idHandbook)
+		{
+			return Context.Fields.Where(w => w.IdHandbook == idHandbook).ToList();
+		}
+
+		public void UpdateField(FieldEntity model, out string message)
+		{
+			if (model == null)
+			{
+				message = "Ошибка!";
+				return;
+			}
+
+			var entity = Context.Fields.Where(w => w.IdField == model.IdField).FirstOrDefault();
+
+			if (entity != null)
+			{
+				entity.IndexField = model.IndexField;
+				entity.NameToQuery = model.NameToQuery;
+				entity.NameVisible = model.NameVisible;
+				entity.IdTypeData = model.IdTypeData;
+				entity.RefHandbookToField = model.RefHandbookToField;
+				entity.IsVisible = model.IsVisible;
+				entity.IsEdit = model.IsEdit;
+				entity.IsNull = model.IsNull;
+				entity.IsCheckDuplicate = model.IsCheckDuplicate;
+
+				try
+				{
+					Context.SaveChanges();
+					message = "Обновление выполнено успешно";
+				}
+				catch (Exception e)
+				{
+					message = e.Message;
+				}
+			}
+			else
+			{
+				message = $"Поле с id {model.IdField} не существует";
+			}
+		}
+
+		public void AddField(FieldEntity model, out string message)
+		{
+			if (model == null)
+			{
+				message = "Ошибка!";
+				return;
+			}
+
+			var entity = new FieldEntity()
+			{
+				IdHandbook = model.IdHandbook,
+				IndexField = model.IndexField,
+				NameToQuery = model.NameToQuery,
+				NameVisible = model.NameVisible,
+				IdTypeData = model.IdTypeData,
+				RefHandbookToField = model.RefHandbookToField,
+				IsVisible = model.IsVisible,
+				IsEdit = model.IsEdit,
+				IsNull = model.IsNull,
+				IsCheckDuplicate = model.IsCheckDuplicate
+			};
+
+			try
+			{
+				Context.Fields.Add(entity);
+
+				Context.SaveChanges();
+
+				message = "Добавление выполнено успешно";
+			}
+			catch (Exception e)
+			{
+				message = e.Message;
+			}
+		}
+
+		public void DeleteField(int idField, out string message)
+		{
+			var entity = Context.Fields.Where(w => w.IdField == idField).FirstOrDefault();
+
+			try
+			{
+				Context.Fields.Remove(entity);
+
+				Context.SaveChanges();
+
+				message = "Удаление выполнено успешно";
+			}
+			catch (Exception e)
+			{
+				message = e.Message;
+			}
+		}
+
+		public Dictionary<string, string> GetKeyValueDictionary(int idHandbook, int idSelectedValue)
+		{
+			Dictionary<string, string> result = new Dictionary<string, string>();
+
+			var handbook = Context.Handbooks.Where(w => w.Id == idHandbook).FirstOrDefault();
+
+			var valueTable = GetDataFromDirectoryQuery(handbook.Request);
+
+			foreach (Dictionary<string, object> value in valueTable)
+			{
+				foreach (var objValue in value)
+				{
+					if (objValue.Key == handbook.KeyField
+					    && objValue.Value.ToString() == idSelectedValue.ToString())
+					{
+						var selectKeyValue = value.ToDictionary(x => x.Key, k => k.Value.ToString());
+
+						result = GetKeyValueToDictionary(selectKeyValue, handbook.KeyField, handbook.SelectionField);
+					}
+				}
+			}
+
+			return result;
+		}
+
+		private Dictionary<string, string> GetKeyValueToDictionary(Dictionary<string, string> selectKeyValue,
+			string keyField, string selectionField)
+		{
+			Dictionary<string, string> result = new Dictionary<string, string>();
+
+			foreach (var value in selectKeyValue)
+			{
+				if (value.Key == keyField)
+				{
+					result.Add("key", value.Value);
+				}
+				else if (value.Key == selectionField)
+				{
+					result.Add("value", value.Value);
+				}
+			}
+
+			return result;
+		}
+	}
 }

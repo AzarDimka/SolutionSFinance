@@ -1,15 +1,14 @@
 ﻿@using SodruzhestvoFinance.Helpers
 @model HandbookModel
 @{
-    string idHandbookBodyToHtml = "HandbookBody" + Model.Handbook.IdHandbook.ToString();
-
-    string idTextKey = $"KeyFieldValue{@Model.Handbook.IdHandbook}";
-    string idTextVisible = $"VisibleFieldValue{@Model.Handbook.IdHandbook}";
+    string idHandbookBodyToHtml = "HandbookBody" + Model.Handbook.IdHandbook;
+    
+    string widthHandbook = Convert.ToString(Model.Handbook.Width) + "px";
 }
 
-<div class="modal fade" id="@Model.IdHandbookToHtml" tabindex="-1" aria-labelledby="HandbookTitel" aria-hidden="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div class="modal fade" id="@Model.IdHandbookToHtml" data-bs-backdrop="static" tabindex="-1" aria-labelledby="HandbookTitel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="max-width: @widthHandbook; width: @widthHandbook">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="HandbookTitel">@Model.Handbook.NameHandbook</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
