@@ -260,7 +260,7 @@ namespace SodruzhestvoFinance.Migrations
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("SodruzhestvoFinance.Areas.LoanManagement.Models.Loan", b =>
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.Loan", b =>
                 {
                     b.Property<int>("LoanId")
                         .ValueGeneratedOnAdd()
@@ -286,18 +286,174 @@ namespace SodruzhestvoFinance.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("LoanTerm")
+                    b.Property<int>("LoanStatusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LoanTerm")
+                        .HasColumnType("int");
 
                     b.HasKey("LoanId");
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("LoanStatusId");
+
                     b.ToTable("Loan");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanStatus", b =>
+                {
+                    b.Property<int>("LoanStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanStatusId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LoanStatusId");
+
+                    b.ToTable("LoanStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            LoanStatusId = 1,
+                            Description = "Займ создан, но еще не активирован",
+                            StatusName = "Новый"
+                        },
+                        new
+                        {
+                            LoanStatusId = 2,
+                            Description = "Займ выдан и по нему производятся платежи",
+                            StatusName = "Активный"
+                        },
+                        new
+                        {
+                            LoanStatusId = 3,
+                            Description = "Платежи просрочены",
+                            StatusName = "Просрочен"
+                        },
+                        new
+                        {
+                            LoanStatusId = 4,
+                            Description = "Займ полностью выплачен",
+                            StatusName = "Погашен"
+                        },
+                        new
+                        {
+                            LoanStatusId = 5,
+                            Description = "Займ списан как безнадежный",
+                            StatusName = "Списан"
+                        });
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanTransaction", b =>
+                {
+                    b.Property<int>("LoanTransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanTransactionId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LoanId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("NewCurrentBalance")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransactionTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LoanTransactionId");
+
+                    b.HasIndex("LoanId");
+
+                    b.HasIndex("TransactionTypeId");
+
+                    b.ToTable("LoanTransaction");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.TransactionType", b =>
+                {
+                    b.Property<int>("TransactionTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionTypeId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TransactionTypeId");
+
+                    b.ToTable("TransactionType");
+
+                    b.HasData(
+                        new
+                        {
+                            TransactionTypeId = 1,
+                            Description = "Выдача денежных средств заемщику",
+                            TransactionTypeName = "Выдача займа"
+                        },
+                        new
+                        {
+                            TransactionTypeId = 2,
+                            Description = "Погашение займа",
+                            TransactionTypeName = "Платеж"
+                        },
+                        new
+                        {
+                            TransactionTypeId = 3,
+                            Description = "Начисление процентов по займу",
+                            TransactionTypeName = "Начисление процентов"
+                        },
+                        new
+                        {
+                            TransactionTypeId = 4,
+                            Description = "Начисление штрафа за просрочку платежа",
+                            TransactionTypeName = "Штраф за просрочку"
+                        },
+                        new
+                        {
+                            TransactionTypeId = 5,
+                            Description = "Списание займа как безнадежного",
+                            TransactionTypeName = "Списание займа"
+                        },
+                        new
+                        {
+                            TransactionTypeId = 6,
+                            Description = "Корректировка суммы долга",
+                            TransactionTypeName = "Корректировка"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -351,7 +507,7 @@ namespace SodruzhestvoFinance.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SodruzhestvoFinance.Areas.LoanManagement.Models.Loan", b =>
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.Loan", b =>
                 {
                     b.HasOne("SodruzhestvoFinance.Areas.Employees.Models.Employee", "Employee")
                         .WithMany()
@@ -359,7 +515,49 @@ namespace SodruzhestvoFinance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SodruzhestvoFinance.Areas.Loan.Models.LoanStatus", "LoanStatus")
+                        .WithMany("Loans")
+                        .HasForeignKey("LoanStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("LoanStatus");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanTransaction", b =>
+                {
+                    b.HasOne("SodruzhestvoFinance.Areas.Loan.Models.Loan", "Loan")
+                        .WithMany("LoanTransactions")
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SodruzhestvoFinance.Areas.Loan.Models.TransactionType", "TransactionType")
+                        .WithMany("LoanTransactions")
+                        .HasForeignKey("TransactionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Loan");
+
+                    b.Navigation("TransactionType");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.Loan", b =>
+                {
+                    b.Navigation("LoanTransactions");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanStatus", b =>
+                {
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.TransactionType", b =>
+                {
+                    b.Navigation("LoanTransactions");
                 });
 #pragma warning restore 612, 618
         }

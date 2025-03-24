@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SodruzhestvoFinance.Data;
-using SodruzhestvoFinance.Areas.Loan.Models;
-using SodruzhestvoFinance.Areas.Employees.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SodruzhestvoFinance.Areas.Loan.Enum;
+using SodruzhestvoFinance.Areas.Loan.Models;
+using SodruzhestvoFinance.Data;
 
 
 namespace SodruzhestvoFinance.Areas.Loan.Controllers
@@ -38,7 +37,19 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 1. Создание объекта Loan на основе данных из ViewModel
+                // 1. Получаем статус "Новый" из базы данных (предполагая, что он уже есть в таблице LoanStatus)
+                var newLoanStatus = _context.LoanStatuses.FirstOrDefault(ls => ls.StatusName == "Новый");
+
+                if (newLoanStatus == null)
+                {
+                    // Обработка ошибки: статус "Новый" не найден в базе данных.
+                    // В реальном приложении следует залогировать ошибку и, возможно,
+                    // вернуть сообщение об ошибке пользователю.
+                    ModelState.AddModelError("", "Ошибка: Статус 'Новый' не найден в базе данных.");
+                    return View(model); // Возвращаем представление с ошибкой.
+                }
+
+                // 2. Создание объекта Loan на основе данных из ViewModel
                 var loan = new Models.Loan
                 {
                     EmployeeId = model.EmployeeId,
@@ -47,14 +58,14 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
                     LoanTerm = model.LoanTerm,
                     IssueDate = model.IssueDate,
                     CurrentBalance = model.LoanAmount, // Изначально остаток равен сумме займа
-                    Status = LoanStatusType.newLoan.ToString() // Или используйте enum: LoanStatus.Active.ToString()
+                    LoanStatusId = newLoanStatus.LoanStatusId // Устанавливаем статус "Новый"
                 };
 
-                // 2. Добавление займа в базу данных
+                // 3. Добавление займа в базу данных
                 _context.Loans.Add(loan);
                 _context.SaveChanges();
 
-                // 3. Перенаправление на страницу просмотра информации о займе (пока не реализована) или на список займов
+                // 4. Перенаправление на страницу просмотра информации о займе или на список займов
                 return RedirectToAction("Index"); // Перенаправление на Index для просмотра созданного займа
             }
 
