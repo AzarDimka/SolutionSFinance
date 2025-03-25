@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SodruzhestvoFinance.Areas.Loan.Enum;
 using SodruzhestvoFinance.Areas.Loan.Models;
 using SodruzhestvoFinance.Data;
 
