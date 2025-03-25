@@ -1,12 +1,8 @@
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using SFinance.Data;
 using SFinance.Data.Services;
 using SodruzhestvoFinance.Models;
 using SodruzhestvoFinance.Models.Enum;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace SodruzhestvoFinance.Controllers;
 
@@ -119,6 +115,8 @@ public class HandbookController : Controller
     {
         Handbook handbook = Service.GenerateHandbook(idHandbook);
 
+        handbook.Fields = handbook.Fields.Where(w => w.IsVisible).ToList();
+
         if (inputField != null)
         {
             List<Dictionary<string, object>> fieldsResult = new List<Dictionary<string, object>>();
@@ -167,12 +165,7 @@ public class HandbookController : Controller
     {
         var handbook = Service.GenerateHandbook(idHandbook);
 
-        var fieldKey = handbook.Fields.Where(f => f.NameFieldToQuery == handbook.KeyField).FirstOrDefault();
-
-        if (fieldKey != null)
-        {
-            handbook.Fields.Remove(fieldKey);
-        }
+		handbook.Fields = handbook.Fields.Where(w => w.IsEdit).ToList();
 
         int key = 0;
 

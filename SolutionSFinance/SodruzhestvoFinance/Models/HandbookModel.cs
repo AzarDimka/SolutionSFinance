@@ -27,7 +27,7 @@ public class HandbookModel
     public HandbookModel()
     {
         IdHandbookToHtml = "";
-        Handbook = new Handbook(0, "", "", "");
+        Handbook = new Handbook(0, "", "", "", 0, 0);
         FieldsInsert = new Dictionary<string, string>();
         StatusInser = new StatusInser();
     }

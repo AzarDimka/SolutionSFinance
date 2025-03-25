@@ -1,0 +1,55 @@
+﻿@using SodruzhestvoFinance.Areas.Administration.Models;
+@using SodruzhestvoFinance.Helpers
+@model HandbookAdmin
+
+@{
+	ViewData["Title"] = "Справочники";
+	Layout = "_Layout";
+}
+<h1>Справочники</h1>
+<div class="row my-2">
+	<div class="col-12">
+		@Html.ActionLink("Добавить", "AddHandbook", "HandbookAdmin", new { }, new { @class = "btn btn-outline-success" })
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Название</th>
+					<th>Ключевое поле</th>
+					<th>Отображаемое поле</th>
+					<th>Высота</th>
+					<th>Ширина</th>
+					<th>Действия</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var handbook in Model.Handbooks)
+				{
+					<tr>
+						<td>@handbook.NameHandbook</td>
+						<td>@handbook.KeyField</td>
+						<td>@handbook.VisibleField</td>
+						<td>@handbook.Height</td>
+						<td>@handbook.Width</td>
+						<td>
+							@Html.ActionLink("Редактировать", "UpdateHandbook", "HandbookAdmin", new { idHandbook = handbook.IdHandbook }, new { @class = "btn btn-sm btn-outline-primary" })
+							@Html.ActionLink("Поля", "Index", "FieldsHandbook", new { idHandbook = handbook.IdHandbook }, new { @class = "btn btn-sm btn-outline-success" })
+							@Html.ActionLink("Удалить", "DeleteHandbook", "HandbookAdmin", new { idHandbook = handbook.IdHandbook, pageNum = Model.PageNum, inputField = Model.InputField }, new { @class = "btn btn-sm btn-outline-danger" })
+							@Html.ButtonHandbook("Открыть", "btn btn-sm btn-outline-success", new { idHandbook = handbook.IdHandbook })
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+@if (!String.IsNullOrEmpty(Model.MessageText))
+{
+	<div class="alert alert-dark alert-dismissible" role="alert" style="position: absolute;  right: 10px; bottom: 70px;">
+		<span>@Model.MessageText</span>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+}

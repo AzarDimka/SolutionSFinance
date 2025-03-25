@@ -6,25 +6,22 @@ namespace SFinance.Data.Services
     {
         private Handbook Handbook;
 
-        public HandbookBuilder(int idHandbook, string nameHandbook, string fieldKey, string visibleField)
+        public HandbookBuilder(int idHandbook, string nameHandbook, string fieldKey, string visibleField, float height, float width)
         {
-            Handbook = new Handbook(idHandbook, nameHandbook, fieldKey, visibleField);
+            Handbook = new Handbook(idHandbook, nameHandbook, fieldKey, visibleField, height, width);
         }
 
         public void AddVisibleField(List<FieldEntity> fieldEntities)
         {
             foreach (var entity in fieldEntities)
             {
-                if (entity.IsVisible)
-                {
-                    var field = new Field(entity.IdField, entity.NameToQuery, entity.NameVisible, (TypeData)entity.IdTypeData);
+				var field = new Field(entity);
 
-                    Handbook.Fields.Add(field);
-                }
-            }
+				Handbook.Fields.Add(field);
+			}
         }
 
-        public void AddValuesFilds(List<Dictionary<string, object>> values)
+        public void AddValuesFields(List<Dictionary<string, object>> values)
         {
             if (!values.Any())
             {
