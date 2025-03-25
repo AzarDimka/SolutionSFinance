@@ -353,22 +353,26 @@ namespace SFinance.Data.Services
 			Dictionary<string, string> result = new Dictionary<string, string>();
 
 			var handbook = Context.Handbooks.Where(w => w.Id == idHandbook).FirstOrDefault();
-
-			var valueTable = GetDataFromDirectoryQuery(handbook.Request);
-
-			foreach (Dictionary<string, object> value in valueTable)
+			
+			if (handbook != null)
 			{
-				foreach (var objValue in value)
-				{
-					if (objValue.Key == handbook.KeyField
-					    && objValue.Value.ToString() == idSelectedValue.ToString())
-					{
-						var selectKeyValue = value.ToDictionary(x => x.Key, k => k.Value.ToString());
+                var valueTable = GetDataFromDirectoryQuery(handbook.Request);
 
-						result = GetKeyValueToDictionary(selectKeyValue, handbook.KeyField, handbook.SelectionField);
-					}
-				}
-			}
+                foreach (Dictionary<string, object> value in valueTable)
+                {
+                    foreach (var objValue in value)
+                    {
+                        if (objValue.Key == handbook.KeyField
+                            && objValue.Value.ToString() == idSelectedValue.ToString())
+                        {
+                            var selectKeyValue = value.ToDictionary(x => x.Key, k => k.Value.ToString());
+
+                            result = GetKeyValueToDictionary(selectKeyValue, handbook.KeyField, handbook.SelectionField);
+                        }
+                    }
+                }
+            }
+
 
 			return result;
 		}
