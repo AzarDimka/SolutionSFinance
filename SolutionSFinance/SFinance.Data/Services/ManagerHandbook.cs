@@ -15,7 +15,7 @@
 
             HandbookBuilder handbookBuilder = new HandbookBuilder(handbookEntity.Id, handbookEntity.NameHandbook, handbookEntity.KeyField, handbookEntity.SelectionField, handbookEntity.Height, handbookEntity.Width);
 
-            handbookBuilder.AddVisibleField(handbookEntity.Fields.ToList());
+            handbookBuilder.AddVisibleField(handbookEntity.Fields.OrderBy(o => o.IndexField).ToList());
 
             List<Dictionary<string, object>> metaDataHandbook = HandbookService.GetDataFromDirectoryQuery(handbookEntity.Request);
 

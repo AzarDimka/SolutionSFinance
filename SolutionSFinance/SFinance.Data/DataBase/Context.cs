@@ -9,7 +9,7 @@ namespace SFinance.Data.DataBase
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         /// <summary>

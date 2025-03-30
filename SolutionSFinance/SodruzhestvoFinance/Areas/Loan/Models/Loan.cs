@@ -36,18 +36,14 @@ namespace SodruzhestvoFinance.Areas.Loan.Models
         [Display(Name = "Текущий остаток долга")]
         public decimal CurrentBalance { get; set; }
 
-        //[Display(Name = "Статус")]
-        //public string Status { get; set; } // Тип string, как в вашей структуре БД
-
         [Display(Name = "Статус")]
         public int LoanStatusId { get; set; } // Foreign Key to LoanStatus
 
-        // Navigation properties (для связи с другими таблицами)
         [ForeignKey("EmployeeId")]
         public virtual Employee Employee { get; set; }
 
         [ForeignKey("LoanStatusId")]
-        public virtual LoanStatus LoanStatus { get; set; } // Связь с таблицей статусов
+        public virtual LoanStatus LoanStatus { get; set; }
 
         public virtual ICollection<LoanTransaction> LoanTransactions { get; set; }
     }

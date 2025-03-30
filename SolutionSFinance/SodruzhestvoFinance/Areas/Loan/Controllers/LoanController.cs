@@ -34,50 +34,27 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(LoanIssueViewModel model)
         {
-            if (ModelState.IsValid)
+            // 1. Получаем статус "Новый" из базы данных (предполагая, что он уже есть в таблице LoanStatus)
+            var newLoanStatus = _context.LoanStatus.FirstOrDefault(ls => ls.LoanStatusId == 1);
+
+            // 2. Создание объекта Loan на основе данных из ViewModel
+            var loan = new Models.Loan
             {
-                // 1. Получаем статус "Новый" из базы данных (предполагая, что он уже есть в таблице LoanStatus)
-                var newLoanStatus = _context.LoanStatuses.FirstOrDefault(ls => ls.StatusName == "Новый");
+                EmployeeId = model.EmployeeId,
+                LoanAmount = model.LoanAmount,
+                InterestRate = model.InterestRate,
+                LoanTerm = model.LoanTerm,
+                IssueDate = model.IssueDate,
+                CurrentBalance = model.LoanAmount, // Изначально остаток равен сумме займа
+                LoanStatusId = newLoanStatus.LoanStatusId // Устанавливаем статус "Новый"
+            };
 
-                if (newLoanStatus == null)
-                {
-                    // Обработка ошибки: статус "Новый" не найден в базе данных.
-                    // В реальном приложении следует залогировать ошибку и, возможно,
-                    // вернуть сообщение об ошибке пользователю.
-                    ModelState.AddModelError("", "Ошибка: Статус 'Новый' не найден в базе данных.");
-                    return View(model); // Возвращаем представление с ошибкой.
-                }
+            // 3. Добавление займа в базу данных
+            _context.Loans.Add(loan);
+            _context.SaveChanges();
 
-                // 2. Создание объекта Loan на основе данных из ViewModel
-                var loan = new Models.Loan
-                {
-                    EmployeeId = model.EmployeeId,
-                    LoanAmount = model.LoanAmount,
-                    InterestRate = model.InterestRate,
-                    LoanTerm = model.LoanTerm,
-                    IssueDate = model.IssueDate,
-                    CurrentBalance = model.LoanAmount, // Изначально остаток равен сумме займа
-                    LoanStatusId = newLoanStatus.LoanStatusId // Устанавливаем статус "Новый"
-                };
-
-                // 3. Добавление займа в базу данных
-                _context.Loans.Add(loan);
-                _context.SaveChanges();
-
-                // 4. Перенаправление на страницу просмотра информации о займе или на список займов
-                return RedirectToAction("Index"); // Перенаправление на Index для просмотра созданного займа
-            }
-
-            // Если модель не валидна, возвращаем представление с ViewModel для отображения ошибок
-            // Необходимо повторно загрузить список сотрудников для DropDownList
-            var employees = _context.Employees.ToList();
-            model.Employees = employees.Select(e => new SelectListItem
-            {
-                Value = e.EmployeeId.ToString(),
-                Text = e.LastName
-            }).ToList();
-
-            return View(model);
+            // 4. Перенаправление на страницу просмотра информации о займе или на список займов
+            return RedirectToAction("Index"); // Перенаправление на Index для просмотра созданного займа
         }
 
         [HttpGet]

@@ -17,7 +17,7 @@ namespace SodruzhestvoFinance.Data
 
         public DbSet<Loan> Loans { get; set; }
 
-        public DbSet<LoanStatus> LoanStatuses { get; set; }
+        public DbSet<LoanStatus> LoanStatus { get; set; }
 
         public DbSet<LoanTransaction> LoanTransaction { get; set; }
 

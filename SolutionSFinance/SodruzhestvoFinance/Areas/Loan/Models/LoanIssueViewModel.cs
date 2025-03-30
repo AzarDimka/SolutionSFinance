@@ -29,7 +29,6 @@ namespace SodruzhestvoFinance.Areas.Loan.Models
         [Display(Name = "Дата выдачи")]
         public DateTime IssueDate { get; set; }
 
-        // Списки для отображения DropDownList
         public List<SelectListItem>? Employees { get; set; }
     }
 }
