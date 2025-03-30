@@ -15,7 +15,7 @@ namespace SodruzhestvoFinance.Data
 
         public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<Loan> Loans { get; set; }
+        public DbSet<Loan> Loan { get; set; }
 
         public DbSet<LoanStatus> LoanStatus { get; set; }
 
@@ -37,7 +37,7 @@ namespace SodruzhestvoFinance.Data
                     .HasPrecision(18, 2);
 
                 entity.Property(e => e.InterestRate)
-                    .HasPrecision(5, 4);
+                    .HasPrecision(18, 2);
 
                 entity.Property(e => e.LoanAmount)
                     .HasPrecision(18, 2);

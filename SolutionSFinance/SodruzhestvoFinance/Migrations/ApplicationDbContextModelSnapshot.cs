@@ -276,8 +276,8 @@ namespace SodruzhestvoFinance.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("InterestRate")
-                        .HasPrecision(5, 4)
-                        .HasColumnType("decimal(5,4)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime2");

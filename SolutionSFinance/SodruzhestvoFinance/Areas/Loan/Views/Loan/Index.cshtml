@@ -17,7 +17,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Employee)
+                №
+            </th>
+            <th>
+                Пайщик
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LoanAmount)
@@ -35,7 +38,7 @@
                 @Html.DisplayNameFor(model => model.CurrentBalance)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LoanStatus)
+                Статус
             </th>
             <th></th>
         </tr>
@@ -45,7 +48,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Employee.LastName)
+                    @Html.DisplayFor(modelItem => item.LoanId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.LastName) @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.MiddleName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LoanAmount)
@@ -63,7 +69,7 @@
                     @Html.DisplayFor(modelItem => item.CurrentBalance)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LoanStatus)
+                    @Html.DisplayFor(modelItem => item.LoanStatus.StatusName)
                 </td>
                 <td>
                     <div class="d-flex">
@@ -82,15 +88,46 @@
                             }
                         </div>
                         <div class="mx-2">
-                            @using (Html.BeginForm())
-                            {
-                                @Html.Hidden("id", item.LoanId)
-                                <button type="submit" class="btn btn-sm btn-danger">График</button>
-                            }
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#loanOperationsModal_@item.LoanId">
+                                Операции
+                            </button>
                         </div>
                     </div>
                 </td>
             </tr>
+            
         }
+
     </tbody>
 </table>
+@*  Модальное окно  *@
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="loanOperationsModal_@item.LoanId" tabindex="-1" role="dialog" aria-labelledby="loanOperationsModalLabel_@item.LoanId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loanOperationsModalLabel_@item.LoanId">Операции с займом № @item.LoanId</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("ProcessLoanOperation", "Loan", FormMethod.Post))
+                    {
+                        @Html.Hidden("LoanId", item.LoanId)
+                        <div class="form-group">
+                            @Html.Label("OperationType", "Тип операции:")
+                            @Html.DropDownList("OperationType", new SelectList(ViewBag.OperationTypes, "Value", "Text"), "Выберите тип операции", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Amount", "Сумма:")
+                            @Html.TextBox("Amount", null, new { @class = "form-control", type = "number", step = "0.01" })
+                        </div>
+                        <button type="submit" class="btn btn-primary">Выполнить</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

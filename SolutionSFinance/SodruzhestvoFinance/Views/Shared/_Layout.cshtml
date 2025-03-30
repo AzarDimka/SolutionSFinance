@@ -68,5 +68,10 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Handbook.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            console.log("jQuery is working!");
+        });
+    </script>
 </body>
 </html>

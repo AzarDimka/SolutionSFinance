@@ -18,8 +18,9 @@ namespace SodruzhestvoFinance.Areas.Loan.Models
         [Display(Name = "Сумма займа")]
         public decimal LoanAmount { get; set; }
 
-        [Required(ErrorMessage = "Процентная ставка обязательна для заполнения")]
-        [Range(0, 100, ErrorMessage = "Процентная ставка должна быть в диапазоне от 0 до 100")]
+        //[Required(ErrorMessage = "Процентная ставка обязательна для заполнения")]
+        //[Range(0, 100, ErrorMessage = "Процентная ставка должна быть в диапазоне от 0 до 100")]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true, NullDisplayText = "")] // Два знака после запятой
         [Display(Name = "Процентная ставка (%)")]
         public decimal InterestRate { get; set; }
 
