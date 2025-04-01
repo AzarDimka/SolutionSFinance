@@ -108,9 +108,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loanOperationsModalLabel_@item.LoanId">Операции с займом № @item.LoanId</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                   
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("ProcessLoanOperation", "Loan", FormMethod.Post))
@@ -124,7 +122,19 @@
                             @Html.Label("Amount", "Сумма:")
                             @Html.TextBox("Amount", null, new { @class = "form-control", type = "number", step = "0.01" })
                         </div>
-                        <button type="submit" class="btn btn-primary">Выполнить</button>
+                        <div class="form-group">
+                            @Html.Label("TransactionDate", "Дата финансовой операции:")
+                            @Html.TextBox("TransactionDate", null, new { @class = "form-control", type = "date" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Description", "Описание:")
+                            @Html.TextArea("Description", null, new { @class = "form-control", type = "text" })
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Выполнить</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
                     }
                 </div>
             </div>

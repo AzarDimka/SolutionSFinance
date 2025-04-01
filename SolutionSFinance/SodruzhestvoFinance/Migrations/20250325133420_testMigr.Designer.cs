@@ -532,13 +532,13 @@ namespace SodruzhestvoFinance.Migrations
             modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanTransaction", b =>
                 {
                     b.HasOne("SodruzhestvoFinance.Areas.Loan.Models.Loan", "Loan")
-                        .WithMany("LoanTransactions")
+                        .WithMany("LoanTransaction")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SodruzhestvoFinance.Areas.Loan.Models.TransactionType", "TransactionType")
-                        .WithMany("LoanTransactions")
+                        .WithMany("LoanTransaction")
                         .HasForeignKey("TransactionTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -550,7 +550,7 @@ namespace SodruzhestvoFinance.Migrations
 
             modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.Loan", b =>
                 {
-                    b.Navigation("LoanTransactions");
+                    b.Navigation("LoanTransaction");
                 });
 
             modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.LoanStatus", b =>
@@ -560,7 +560,7 @@ namespace SodruzhestvoFinance.Migrations
 
             modelBuilder.Entity("SodruzhestvoFinance.Areas.Loan.Models.TransactionType", b =>
                 {
-                    b.Navigation("LoanTransactions");
+                    b.Navigation("LoanTransaction");
                 });
 #pragma warning restore 612, 618
         }

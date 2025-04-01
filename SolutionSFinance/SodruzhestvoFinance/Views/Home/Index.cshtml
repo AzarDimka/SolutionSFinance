@@ -14,7 +14,15 @@
     <div class="col-5">
         @Html.InputHandbook("idInput1", "Продукты", new { IdHandbook = 1, isReturnSelectValue = true })
     </div>
-</div><div class="row">
+</div>
+<div class="row">
     <div class="col-5">
-        @Html.InputHandbook("idInput2", "Сотрудники", new { IdHandbook = 6, isReturnSelectValue = true, SelectValue = 1 })
+        @Html.InputHandbook("idInput2", "Сотрудники", new { IdHandbook = 4, isReturnSelectValue = true, SelectValue = 1 })
     </div>
+</div>
+
+@using (Html.BeginForm("Transactions", "Loan", FormMethod.Get))
+{
+    <button type="submit" class="btn btn-sm btn-primary">операции</button>
+}
+

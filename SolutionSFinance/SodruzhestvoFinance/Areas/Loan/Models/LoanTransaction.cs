@@ -2,6 +2,7 @@
 
 namespace SodruzhestvoFinance.Areas.Loan.Models
 {
+    [Table("LoanTransaction")]
     public class LoanTransaction
     {
         public int LoanTransactionId { get; set; }
@@ -9,9 +10,8 @@ namespace SodruzhestvoFinance.Areas.Loan.Models
         public int TransactionTypeId { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal Amount { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string CreatedBy { get; set; }
         public decimal NewCurrentBalance { get; set; }
 
         [ForeignKey("LoanId")]

@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Финансовые операции";
+    Layout = "_Layout";
+}
+
+@model SodruzhestvoFinance.Areas.Loan.Models.LoanTransactionsViewModel
+
+@{
+    ViewBag.Title = "Финансовые операции";
+}
+
+<h2>Финансовые операции</h2>
+
+@if (Model.LoanId.HasValue)
+{
+    <h3>Операции по займу: @Model.LoanId</h3>
+}
+else
+{
+    <h3>Все операции</h3>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Дата</th>
+            <th>Тип операции</th>
+            <th>Сумма</th>
+            <th>Описание</th>
+            <th>Новый баланс</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr>
+                <td>@transaction.LoanId</td>
+                <td>@transaction.TransactionDate</td>
+                <td>@transaction.TransactionType.TransactionTypeName</td>
+                <td>@transaction.Amount.ToString("N2")</td>
+                <td>@transaction.Description</td>
+                <td>@transaction.NewCurrentBalance.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

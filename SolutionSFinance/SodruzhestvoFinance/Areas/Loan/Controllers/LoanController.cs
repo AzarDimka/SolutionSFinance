@@ -154,7 +154,7 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         }
 
         [HttpPost]
-        public IActionResult ProcessLoanOperation(int loanId, string operationType, decimal amount)
+        public IActionResult ProcessLoanOperation(int loanId, string operationType, decimal amount, DateTime transactionDate, string description)
         {
             try
             {
@@ -174,14 +174,11 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
                             TempData["ErrorMessage"] = "Заём уже выдан";
                             return RedirectToAction("Index");
                         }
-                        // Логика выдачи займа
-                        IssueLoan(loan, amount);
+                        IssueLoan(loan, amount, transactionDate, description);
                         break;
                     case "Payment":
-                        // Логика внесения платежа
-                        ProcessPayment(loan, amount);
+                        ProcessPayment(loan, amount, transactionDate, description);
                         break;
-                    // ... другие типы операций ...
                     default:
                         TempData["ErrorMessage"] = "Неизвестный тип операции.";
                         return RedirectToAction("Index");
@@ -200,7 +197,7 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         }
 
         // Пример реализации логики выдачи займа
-        private void IssueLoan(Models.Loan loan, decimal amount)
+        private void IssueLoan(Models.Loan loan, decimal amount, DateTime transactionDate, string description)
         {
             // Проверка, что сумма выдачи соответствует сумме займа.
             if (loan.LoanAmount != amount)
@@ -213,9 +210,11 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
             {
                 LoanId = loan.LoanId,
                 TransactionTypeId = 1, // Замените на ID типа "Выдача займа"
-                TransactionDate = DateTime.Now,
+                TransactionDate = transactionDate,
                 Amount = amount,
-                NewCurrentBalance = amount  // CurrentBalance становится суммой займа
+                CreatedDate = DateTime.Now,
+                NewCurrentBalance = amount,  // CurrentBalance становится суммой займа
+                Description = description
             };
             _context.LoanTransaction.Add(transaction);
 
@@ -225,16 +224,18 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
         }
 
         // Пример реализации логики внесения платежа
-        private void ProcessPayment(Models.Loan loan, decimal amount)
+        private void ProcessPayment(Models.Loan loan, decimal amount, DateTime transactionDate, string description)
         {
             // 1. Создаем транзакцию (предполагаем, что у вас есть TransactionTypeId для "Внесение платежа")
             var transaction = new LoanTransaction
             {
                 LoanId = loan.LoanId,
                 TransactionTypeId = 2, // Замените на ID типа "Внесение платежа"
-                TransactionDate = DateTime.Now,
+                TransactionDate = transactionDate,
                 Amount = amount * -1,  // Отрицательное значение для уменьшения баланса
-                NewCurrentBalance = loan.CurrentBalance - amount
+                CreatedDate = DateTime.Now,
+                NewCurrentBalance = loan.CurrentBalance - amount,
+                Description = description
             };
             _context.LoanTransaction.Add(transaction);
 
@@ -248,6 +249,30 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
                 loan.CurrentBalance = 0; //Чтобы не было отрицательного баланса
             }
 
+        }
+
+        [HttpGet]
+        public IActionResult Transactions(int? loanId)
+        {
+            IQueryable<LoanTransaction> transactionsQuery = _context.LoanTransaction
+            .Include(lt => lt.TransactionType)
+            .Include(lt => lt.Loan);
+
+            LoanTransactionsViewModel viewModel = new LoanTransactionsViewModel();
+            viewModel.LoanId = loanId;  // Save loanId to the ViewModel
+
+            if (loanId.HasValue)
+            {
+                // Показываем транзакции только для указанного займа
+                transactionsQuery = transactionsQuery.Where(lt => lt.LoanId == loanId);
+                // Получаем имя займа (если нужно)
+                var loan = _context.Loan.FirstOrDefault(l => l.LoanId == loanId);
+                //viewModel.LoanName = loan?.LoanAmount.ToString(); // Get Loan Name  (or appropriate property)
+            }
+
+            viewModel.Transactions = transactionsQuery.ToList();
+
+            return View(viewModel);
         }
     }
 }

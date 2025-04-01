@@ -8,6 +8,6 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<LoanTransaction> LoanTransactions { get; set; }
+        public virtual ICollection<LoanTransaction> LoanTransaction { get; set; }
     }
 }
