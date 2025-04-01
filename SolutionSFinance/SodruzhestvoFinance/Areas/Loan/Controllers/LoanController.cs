@@ -220,7 +220,6 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
 
             // 2. Меняем статус займа
             loan.LoanStatusId = 2; // Замените на ID статуса "Активный"
-            loan.CurrentBalance = amount; // Устанавливаем текущий баланс равным сумме займа
         }
 
         // Пример реализации логики внесения платежа
@@ -248,7 +247,6 @@ namespace SodruzhestvoFinance.Areas.Loan.Controllers
                 loan.LoanStatusId = 3; // Замените на ID статуса "Погашен"
                 loan.CurrentBalance = 0; //Чтобы не было отрицательного баланса
             }
-
         }
 
         [HttpGet]

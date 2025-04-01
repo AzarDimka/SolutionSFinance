@@ -132,6 +132,7 @@
                         </div>
 
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-info" onclick="viewTransactions(@item.LoanId)">Просмотреть транзакции</button>
                             <button type="submit" class="btn btn-primary">Выполнить</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                         </div>
@@ -141,3 +142,9 @@
         </div>
     </div>
 }
+
+<script>
+    function viewTransactions(loanId) {
+        window.location.href = '/Loan/Loan/Transactions?loanId=' + loanId;
+    }
+</script>
